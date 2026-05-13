@@ -5,6 +5,8 @@ using System.Collections;
 public class GameManager : MonoBehaviour
 {
     public Button playMoveButton;
+    public Button equationsButton;
+    public RectTransform equationsPanel;
     public UnitManager unitManager;
 
     private float round=0f;
@@ -12,6 +14,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         playMoveButton.onClick.AddListener(playMove);
+        equationsButton.onClick.AddListener(HandleEquationSheet);
     }
 
     void Update() { }
@@ -46,4 +49,20 @@ private IEnumerator ChargeAfterSpawn()
         unit.Charge();
     }
 }
+
+    void HandleEquationSheet()
+{
+    bool isActive = equationsPanel.gameObject.activeSelf;
+    equationsPanel.gameObject.SetActive(!isActive);
+}
+    void OpenEquations()
+    {
+        equationsPanel.gameObject.SetActive(true);
+    }
+
+    void CloseEquations()
+    {
+        equationsPanel.gameObject.SetActive(false);
+    }
+
 }
