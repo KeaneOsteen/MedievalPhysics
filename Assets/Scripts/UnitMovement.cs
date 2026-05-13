@@ -1,61 +1,66 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
 public class UnitMovement : MonoBehaviour
 {
-    public float moveSpeed = 3f;
-    public float health;
+    public int currentCharge;
+    public int charge;
 
-    private List<Transform> _path;
-    private int _currentWaypointIndex = 0;
-    private bool _isMoving = false;
-    private int _pendingMoves = 0; // tracks queued advances
+    [Header("Projectile")]
+    public GameObject projectilePrefab;
+    public Transform firePoint;
+    public float launchAngle = 45f;
+    public Transform target;
 
-    public void SetPath(List<Transform> path)
+    [Header("Rotation")]
+    public float rotationOffset = 0f;
+
+    void Start()
     {
-        _path = path;
-        _currentWaypointIndex = 0;
+        target = GameObject.FindWithTag("Home").transform;
     }
 
-    public void MoveToNextWaypoint()
+    void Awake()
     {
-        if (_path == null || _currentWaypointIndex + _pendingMoves >= _path.Count) return;
-
-        _pendingMoves++;
-
-        if (!_isMoving)
-            StartCoroutine(ProcessMoveQueue());
+        currentCharge = 0;
     }
 
-    private IEnumerator ProcessMoveQueue()
+    void Update()
     {
-        _isMoving = true;
+        if (target == null) return;
 
-        while (_pendingMoves > 0)
+        Vector3 lookDir = target.position - transform.position;
+        lookDir.y = 0f;
+        if (lookDir != Vector3.zero)
         {
-            if (_currentWaypointIndex >= _path.Count) break;
+            Quaternion targetRot = Quaternion.LookRotation(lookDir);
+            transform.rotation = targetRot * Quaternion.Euler(0f, rotationOffset, 0f);
+        }
+    }
 
-            Transform target = _path[_currentWaypointIndex];
-            _currentWaypointIndex++;
-            _pendingMoves--;
+    public void Charge()
+    {
+        currentCharge++;
+        if (currentCharge >= charge)
+        {
+            currentCharge = 0;
+            Fire();
+        }
+    }
 
-            while (Vector3.Distance(transform.position, target.position) > 0.1f)
-            {
-                transform.position = Vector3.MoveTowards(
-                    transform.position,
-                    target.position,
-                    moveSpeed * Time.deltaTime
-                );
-                yield return null;
-            }
-
-            transform.position = target.position;
+    private void Fire()
+    {
+        if (projectilePrefab == null || target == null || firePoint == null)
+        {
+            Debug.LogWarning("UnitMovement: Missing projectile prefab, fire point, or target.");
+            return;
         }
 
-        _isMoving = false;
+        GameObject proj = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
+        EnemyProjectile ep = proj.GetComponent<EnemyProjectile>();
 
-        if (_currentWaypointIndex >= _path.Count)
-            Destroy(gameObject);
+        if (ep != null)
+            ep.ShootAt(target.position, firePoint.position, firePoint.forward, launchAngle, GetComponent<Collider>());
+        else
+            Debug.LogWarning("UnitMovement: Projectile prefab is missing EnemyProjectile component.");
     }
 }

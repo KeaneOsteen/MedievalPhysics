@@ -15,7 +15,8 @@ public class TowerUI : MonoBehaviour
     [Header("Fields")]
     public TMP_InputField velocityField;
     public TMP_InputField angleField;
-    public TMP_InputField massField;
+    public Slider massField;
+    public Toggle followToggle;
 
     [Header("Drag Settings")]
     public float dragHoldTime = 0.2f;
@@ -27,6 +28,8 @@ public class TowerUI : MonoBehaviour
     private bool isDragging = false;
     private float mouseHeldTime = 0f;
     private GameObject dragTarget = null;
+
+    public bool IsPanelOpen => panel.gameObject.activeSelf;
 
     void Awake()
     {
@@ -69,7 +72,6 @@ public class TowerUI : MonoBehaviour
                 Close();
         }
 
-        // Track hold duration
         if (Input.GetMouseButton(0) && dragTarget != null && !isDragging)
         {
             mouseHeldTime += Time.deltaTime;
@@ -81,7 +83,6 @@ public class TowerUI : MonoBehaviour
             }
         }
 
-        // Release
         if (Input.GetMouseButtonUp(0))
         {
             if (isDragging)
@@ -134,7 +135,14 @@ public class TowerUI : MonoBehaviour
 
         velocityField.text = obj.velocity.ToString();
         angleField.text    = obj.angle.ToString();
-        massField.text     = obj.rotation.ToString();
+        massField.value    = obj.rotation;
+        followToggle.isOn  = obj.followProjectile;
+
+        massField.onValueChanged.RemoveAllListeners();
+        massField.onValueChanged.AddListener(_ => Apply());
+
+        followToggle.onValueChanged.RemoveAllListeners();
+        followToggle.onValueChanged.AddListener(_ => Apply());
 
         panel.gameObject.SetActive(true);
     }
@@ -152,6 +160,7 @@ public class TowerUI : MonoBehaviour
 
         if (float.TryParse(velocityField.text, out float v)) current.velocity = v;
         if (float.TryParse(angleField.text,    out float a)) current.angle    = a;
-        if (float.TryParse(massField.text,     out float m)) current.rotation = m;
+        current.rotation = massField.value;
+        current.followProjectile = followToggle.isOn;
     }
 }

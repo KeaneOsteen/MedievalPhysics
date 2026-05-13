@@ -1,39 +1,49 @@
-    using UnityEngine;
-using UnityEngine.UI; // Required for Button component
+using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
     public Button playMoveButton;
-    public UnitPathManager unitManager;
+    public UnitManager unitManager;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private float round=0f;
+
     void Start()
     {
         playMoveButton.onClick.AddListener(playMove);
-        //unitManager.SpawnUnit();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    void Update() { }
 
     void playMove()
     {
-        unitManager.SpawnUnit();
 
         GameObject[] towers = GameObject.FindGameObjectsWithTag("Tower");
-        UnitMovement[] units = FindObjectsByType<UnitMovement>(FindObjectsSortMode.None);
 
-        foreach (GameObject tower in towers) {
+        foreach (GameObject tower in towers)
+        {
             tower.GetComponent<Tower>().Shoot();
         }
-
-        foreach (UnitMovement unit in units)
-        {
-            unit.MoveToNextWaypoint();
-        }
-
     }
+
+    public void playEnemyMove()
+{
+    unitManager.SpawnUnits();
+    StartCoroutine(ChargeAfterSpawn());
+}
+
+private IEnumerator ChargeAfterSpawn()
+{
+    // Wait one frame for all spawned units to run Awake/Start
+    yield return null;
+
+    UnitMovement[] units = FindObjectsByType<UnitMovement>(FindObjectsSortMode.None);
+    Debug.Log($"Found {units.Length} UnitMovement objects");
+
+    foreach (UnitMovement unit in units)
+    {
+        unit.Charge();
+    }
+}
 }
