@@ -155,3 +155,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyProjectile
   waterHitEffect: {fileID: 507831079051331198, guid: 10f5a01bde58092408da8d55c59a107a, type: 3}
   groundHitEffect: {fileID: 507831079051331198, guid: 10f5a01bde58092408da8d55c59a107a, type: 3}
+  explosionEffect: {fileID: 8111412231376412961, guid: ce9d2b82dec6a764caf9c5ce9b56ca49, type: 3}

@@ -107,6 +107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
   waterHitEffect: {fileID: 8111412231376412961, guid: 82ed155b63667134b921d871248f5aa7, type: 3}
   groundHitEffect: {fileID: 507831079051331198, guid: 10f5a01bde58092408da8d55c59a107a, type: 3}
+  explosionEffect: {fileID: 8111412231376412961, guid: ce9d2b82dec6a764caf9c5ce9b56ca49, type: 3}
 --- !u!54 &4856825789743763457
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -117,7 +118,7 @@ Rigidbody:
   serializedVersion: 5
   m_Mass: 10
   m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_AngularDamping: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}

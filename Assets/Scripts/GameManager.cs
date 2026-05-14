@@ -6,8 +6,11 @@ public class GameManager : MonoBehaviour
 {
     public Button playMoveButton;
     public Button equationsButton;
+    public Button tutorialButton;
     public RectTransform equationsPanel;
+    public RectTransform tutorialPanel;
     public UnitManager unitManager;
+    public float health =100f;
 
     private float round=0f;
 
@@ -15,6 +18,7 @@ public class GameManager : MonoBehaviour
     {
         playMoveButton.onClick.AddListener(playMove);
         equationsButton.onClick.AddListener(HandleEquationSheet);
+        tutorialButton.onClick.AddListener(HandleTutorialSheet);
     }
 
     void Update() { }
@@ -63,6 +67,17 @@ private IEnumerator ChargeAfterSpawn()
     void CloseEquations()
     {
         equationsPanel.gameObject.SetActive(false);
+    }
+
+    public void TakeDamage(float dmg)
+    {
+        health -= dmg;
+    }
+
+    void HandleTutorialSheet()
+    {
+        bool isActive = tutorialPanel.gameObject.activeSelf;
+        tutorialPanel.gameObject.SetActive(!isActive);
     }
 
 }

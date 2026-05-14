@@ -23,21 +23,9 @@ public class Tower : MonoBehaviour
 
     public CameraController anchor;
 
-    [Header("Laser")]
-    public LineRenderer laser;
-    public float laserLength = 500f;
-
     void Start()
     {
         TowerUI.Instance.Open(this);
-
-        if (laser != null)
-        {
-            laser.positionCount = 2;
-        }
-
-        laser.startWidth = 0.05f;
-        laser.endWidth = 0.05f;
     }
 
     void Awake()
@@ -48,36 +36,10 @@ public class Tower : MonoBehaviour
     void Update()
     {
         // Rotate tower horizontally
-        transform.rotation = Quaternion.Euler(0, rotation, 0);
+        //transform.rotation = Quaternion.Euler(0, rotation, 0);
 
         // Rotate barrel vertically
         barrelPivot.localRotation = Quaternion.Euler(angle + rotOffset, 0, 0);
-
-        // Draw aiming laser
-        DrawLaser();
-    }
-
-    private void DrawLaser()
-    {
-        if (laser == null || barrel == null)
-            return;
-
-        Vector3 start = barrel.position;
-        Vector3 end;
-
-        RaycastHit hit;
-
-        if (Physics.Raycast(start, barrel.forward, out hit, laserLength))
-        {
-            end = hit.point;
-        }
-        else
-        {
-            end = start + barrel.forward * laserLength;
-        }
-
-        laser.SetPosition(0, start);
-        laser.SetPosition(1, end);
     }
 
     public void Shoot()
@@ -118,5 +80,11 @@ public class Tower : MonoBehaviour
                 barrel.forward
             );
         }
+    }
+
+    public void rotateToward(Transform target)
+    {
+        Vector3 dir = target.position - transform.position;
+        transform.rotation = Quaternion.LookRotation(-dir);
     }
 }

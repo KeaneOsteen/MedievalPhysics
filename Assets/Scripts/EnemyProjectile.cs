@@ -7,9 +7,11 @@ public class EnemyProjectile : MonoBehaviour
     [Header("Hit Effects")]
     public GameObject waterHitEffect;
     public GameObject groundHitEffect;
+    public GameObject explosionEffect;
 
     private int waterLayer;
     private int groundLayer;
+    private int homeLayer;
 
     private GameManager game;
 
@@ -18,6 +20,7 @@ public class EnemyProjectile : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         waterLayer = LayerMask.NameToLayer("water");
         groundLayer = LayerMask.NameToLayer("ground");
+        homeLayer = LayerMask.NameToLayer("home");
         game = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
     }
 
@@ -59,6 +62,18 @@ public class EnemyProjectile : MonoBehaviour
             SpawnEffect(waterHitEffect, collision);
         else if (hitLayer == groundLayer)
             SpawnEffect(groundHitEffect, collision);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.layer == homeLayer)
+        {
+            game.TakeDamage(25f);
+            GameObject instance = Instantiate(explosionEffect, transform.position, Quaternion.identity);
+            Destroy(instance, 1f);
+
+            Destroy(gameObject);
+        }
     }
 
     private void SpawnEffect(GameObject effectPrefab, Collision collision)

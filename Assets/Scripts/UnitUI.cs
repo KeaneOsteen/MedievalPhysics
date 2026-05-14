@@ -35,21 +35,24 @@ public class UnitUI : MonoBehaviour
     void Update()
     {
         if (current != null && panel.gameObject.activeSelf)
-        {
-            Vector2 screenPos = mainCamera.WorldToScreenPoint(current.transform.position);
-            panel.position = screenPos + new Vector2(120f, 0f);
+{
+    Vector2 screenPos = mainCamera.WorldToScreenPoint(current.transform.position);
+    panel.position = screenPos + new Vector2(120f, 0f);
 
-            if (tower != null && towerPoint != null)
-            {
-                float dist = Vector3.Distance(current.transform.position, tower.transform.position);
-                float heightDiff = towerPoint.position.y - current.transform.position.y;
-                distanceText.text = $"Distance: {dist:F2} | Height Diff: {heightDiff:F2}";
-            }
-            else
-            {
-                distanceText.text = "Distance: N/A";
-            }
-        }
+    if (tower != null && towerPoint != null)
+    {
+        Vector3 currentFlat = new Vector3(current.transform.position.x, 0f, current.transform.position.z);
+        Vector3 towerFlat = new Vector3(tower.transform.position.x, 0f, tower.transform.position.z);
+
+        float dist = Vector3.Distance(currentFlat, towerFlat);
+        float heightDiff = towerPoint.position.y - current.transform.position.y;
+        distanceText.text = $"Distance: {dist:F2} | Height Diff: {heightDiff:F2}";
+    }
+    else
+    {
+        distanceText.text = "Distance: N/A";
+    }
+}
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -88,6 +91,7 @@ public class UnitUI : MonoBehaviour
     {
         current = obj;
         panel.gameObject.SetActive(true);
+        tower.GetComponent<Tower>().rotateToward(current.gameObject.transform);
     }
 
     public void Close()

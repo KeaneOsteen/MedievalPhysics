@@ -135,11 +135,11 @@ public class TowerUI : MonoBehaviour
 
         velocityField.text = obj.velocity.ToString();
         angleField.text    = obj.angle.ToString();
-        massField.value    = obj.rotation;
+        //massField.value    = obj.rotation;
         followToggle.isOn  = obj.followProjectile;
 
-        massField.onValueChanged.RemoveAllListeners();
-        massField.onValueChanged.AddListener(_ => Apply());
+        //massField.onValueChanged.RemoveAllListeners();
+        //massField.onValueChanged.AddListener(_ => Apply());
 
         followToggle.onValueChanged.RemoveAllListeners();
         followToggle.onValueChanged.AddListener(_ => Apply());
@@ -160,7 +160,7 @@ public class TowerUI : MonoBehaviour
 
         if (float.TryParse(velocityField.text, out float v)) current.velocity = v;
         if (float.TryParse(angleField.text,    out float a)) current.angle    = a;
-        current.rotation = massField.value;
+        //current.rotation = massField.value;
         current.followProjectile = followToggle.isOn;
     }
 }

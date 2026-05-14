@@ -67,5 +67,5 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "MedievalPhysics.slnx"
+    "dotnet.defaultSolution": "PhysicsTowerDefense.slnx"
 }

@@ -495,7 +495,7 @@ GameObject:
   - component: {fileID: 2283622213420198239}
   - component: {fileID: 2115746279626184242}
   - component: {fileID: 48890774552322173}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: EnemyCannon
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -544,8 +544,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 14.82, y: 10, z: 20.1}
-  m_Center: {x: 0.011348724, y: 1.1195474, z: -7.72}
+  m_Size: {x: 14.82, y: 16.495525, z: 20.1}
+  m_Center: {x: 0.011348504, y: 4.3673067, z: -7.7200003}
 --- !u!54 &2115746279626184242
 Rigidbody:
   m_ObjectHideFlags: 0
